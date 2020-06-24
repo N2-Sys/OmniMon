@@ -191,8 +191,6 @@ sudo cp src/*.h /usr/include
 
 For the mininet and bmv2 environmen, you can follow the instructions on the official site and install the dependencies easily.
 
-【emmmm，锦博的文档，这部分没有详细的，我把锦博的dpdk相关的依赖删了】
-
 ```
 bvm2    : https://github.com/p4lang/behavioral-model#dependencies
 p4c     : https://github.com/p4lang/p4c#getting-started
