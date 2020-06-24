@@ -1,6 +1,9 @@
 This repo contains 3 parts:
 
-* Testbed programs that can be deployed in P4 switche
+* Testbed programs, including:
+  * End-host program
+  * Controller program (collective analysis not included)
+  * Dummy P4 program that can be run atop Tofino. We do not provide the full program due to the restriction of Barefoot NDA.
 * MiniNet programs that simulate OmniMon
 * Collective analysis that works for both testbed and MiniNet programs
 
