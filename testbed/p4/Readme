@@ -1,0 +1,6 @@
+Dummy version Omnimon
+
+The function of this program mainly includes parsing the header of Omnimon and completing the basic forwarding function. 
+We hide the counting part which requires the Stateful ALU of Tofino according to the Barefoot NDA.
+
+When the program is deployed, you need to configure the port and add the flow entry.
