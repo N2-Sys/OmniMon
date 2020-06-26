@@ -73,7 +73,7 @@ make -j 4
 
 Our testbed requires three servers and two switches, connected as shown in the figure below.
 
-![](./img/topo.png)
+![](./img/testbed_topo.png)
 
 * Server: 
 
@@ -221,6 +221,7 @@ The testbed programs include:
 * **p4**: the dummy P4 program which can run atop bmv2
 * **src**: Omnimon source code directory
 * **trace**: a processed small-scale caida trace for testing
+* CMakeLists.txt
 
 
 ## Install Dependencies
@@ -271,7 +272,7 @@ Mininet : http://mininet.org/download/
 
 There are four hosts (h1, h2, h3, h4), three p4 switches (s1, s2, s3) and a controller(h5) in the network. The prototype consists of three parts, which run on the host, switch and controller, respectively.
 
-![](./img/mininet.png)
+![](./img/mininet_topo.png)
 
 
 
@@ -347,7 +348,7 @@ h1 ../bin/end_host ../config/config.ini 1
 
 When the program ends(as picture below shows), the end_host result will be automatically written in `mininet/output/hosts`.
 
-![](./img/mininet_res1.png)
+![](./img/mininet_output.png)
 
 
 To generate switch result, you need run following commands.
