@@ -26,12 +26,11 @@ typedef struct FlowMetric {
     uint32_t index2;
     uint32_t version;
     int32_t position;
-    //SJB624
+
     uint8_t s1;
     uint8_t s2;
     uint8_t s3;
     uint8_t dst;
-    //SJB
 } flow_metric;
 
 typedef struct IngressFlowMetric {
@@ -52,11 +51,8 @@ typedef struct Host {
     uint64_t interval_cnt;
     uint64_t start_ts;
 
-    /****** chenxiang ******/
-    // hashtable for receiver
     flow_key_t* ingress_flow_key;
     ingress_flow_metric_t* ingress_flow_data;
-    /***********************/
 
     struct rte_hash* hash_table;
     flow_metric* flow_data;
@@ -67,7 +63,7 @@ host_t* host_init(uint32_t id, uint32_t n, uint32_t key_byte, uint32_t interval_
 void host_destroy(host_t* host);
 void host_print(host_t* host, int cur_interval);
 void host_reset(host_t* host);
-//SJB **
+
 flow_metric* host_process_packet(host_t* host, tuple_t* t, const u_char *pkt,int pkt_len);
 pcap_t *pcap_init(char *err_buf);
 
@@ -82,7 +78,6 @@ pcap_t *pcap_init(char *err_buf){
     printf("open device %s fail\n",dev);
     return handle;
 }
-//SJB
 
 host_t* host_init(uint32_t id, uint32_t n, uint32_t key_byte, uint32_t interval_len,
         const char* output_dir, const char* zmq_server) {
@@ -121,7 +116,6 @@ host_t* host_init(uint32_t id, uint32_t n, uint32_t key_byte, uint32_t interval_
     }
 
 
-    /****** chenxiang ******/
     uint32_t rte_hash_num_buckets = rte_align32pow2(n) / 8;
     ret->ingress_flow_data = (ingress_flow_metric_t*)rte_zmalloc("ig_flowmetric", 
         n*sizeof(ingress_flow_metric_t), RTE_CACHE_LINE_SIZE);
@@ -133,7 +127,6 @@ host_t* host_init(uint32_t id, uint32_t n, uint32_t key_byte, uint32_t interval_
     if (ret->ingress_flow_key == NULL) {
         LOG_ERR("RTE allocate error\n");
     }
-    /***********************/
 
     return ret;
 }
@@ -208,21 +201,13 @@ void host_print(host_t* host, int cur_interval) {
 	if(flow_data->s3 != 0)
 	fprintf(path_file,"s%u:%u,%u ",flow_data->s3,flow_data->index1,flow_data->index2);
 	fprintf(path_file,"h%u:%u\n",flow_data->dst,flow_data->position);        
-// tuple_ret[cnt].byte = flow_data->byte_cnt;
-        // cnt++;
     }
 
-    // qsort (tuple_ret, cnt, sizeof(tuple_t), cmp);
-    // for (int i=0; i<cnt; i++) {
-    //    print_tuple(output_file, tuple_ret+i);
-    // }
     fclose(output_file);
     fclose(path_file);
-    // free(tuple_ret);
 }
 
 
-/****** chenxiang ******/
 void host_ingress_print(host_t* host, int cur_interval) {
     char tmp[100];
     sprintf(tmp, "%sdst%u_%d", host->output_dir, host->id, cur_interval);
@@ -243,7 +228,6 @@ void host_ingress_print(host_t* host, int cur_interval) {
     }
     fclose(output_file);
 }
-/***********************/
 
 
 void host_reset(host_t* host) {
@@ -252,10 +236,8 @@ void host_reset(host_t* host) {
     host->interval_cnt = 0;
     host->start_ts = now_us();
 
-    /****** chenxiang ******/
     memset(host->ingress_flow_data, 0, sizeof(ingress_flow_metric_t)*host->max_n);
     memset(host->ingress_flow_key, 0, sizeof(flow_key_t)*host->max_n);
-    /***********************/
 }
 
 

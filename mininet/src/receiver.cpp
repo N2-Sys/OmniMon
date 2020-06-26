@@ -161,21 +161,6 @@ int main(int argc, char **argv) {
             }
         }
 
-        // // printf("Parsing IPv4 header\n");
-        // ip = (struct sniff_ip*)(host_recv_pkt+sizeof(struct sniff_ethernet)+sizeof(struct sniff_omnimon));
-        // uint16_t srcPort, dstPort;
-        // // printf("Protocol: %u\n", (unsigned int)ip->protocol);
-        // if (ip->protocol == 6) {
-        //     // printf("Parsing TCP header\n");
-        //     tcp = (struct sniff_tcp*)((uint8_t*)ip+(ip->ip_len<<2));
-        //     srcPort = tcp->srcPort;
-        //     dstPort = tcp->dstPort;
-        // } else if (ip->protocol == 17) {
-        //     // printf("Parsing UDP header\n");
-        //     udp = (struct sniff_udp*)((uint8_t*)ip+(ip->ip_len<<2));
-        //     srcPort = tcp->srcPort;
-        //     dstPort = tcp->dstPort;
-        // }
     }
 
     return 0;

@@ -30,7 +30,6 @@ typedef struct __attribute__ ((__packed__)) LargeMessage {
     unsigned char data[MAX_LARGE_DATA];
 } large_msg_t;
 
-//SJB **
 #define MAX_HOST_DATA 256
 typedef struct __attribute__ ((__packed__)) NormalMessage {
     uint32_t host_id;
@@ -39,7 +38,6 @@ typedef struct __attribute__ ((__packed__)) NormalMessage {
     struct ominimon_header o_header;
     unsigned char data[MAX_HOST_DATA];
 } host_msg_t;
-//SJB
 
 typedef struct ZMQHostChannel {
     void* zmq_ctx;
@@ -68,9 +66,6 @@ zmq_host_channel_t* zmq_host_channel_init(char *addr1, char *addr2) {
     if (ret->zmq_ctx == 0) {
         LOG_ERR("zmq_ctx_new(): %s\n", zmq_strerror(errno));
     }
-    // if (zmq_ctx_set(ret->zmq_ctx, ZMQ_IO_THREADS, 1) == -1) {
-    //     LOG_ERR("zmq_ctx_set(): %s\n", zmq_strerror(errno));
-    // }
 
     ret->to_socket = zmq_socket(ret->zmq_ctx, ZMQ_PUSH);
     ret->from_socket = zmq_socket(ret->zmq_ctx, ZMQ_PULL);
@@ -80,14 +75,7 @@ zmq_host_channel_t* zmq_host_channel_init(char *addr1, char *addr2) {
     if (zmq_connect(ret->from_socket, addr2) == -1) {
         LOG_ERR("zmq_connect(): %s\n", zmq_strerror(errno));
     }
-    // else {
-    //     if (zmq_bind(ret->from_socket, addr1) == -1) {
-    //         fprintf(stderr, "zmq_bind(): %s\n", zmq_strerror(errno));
-    //     }
-    //     if (zmq_bind(ret->to_socket, addr2) == -1) {
-    //         fprintf(stderr, "zmq_bind(): %s\n", zmq_strerror(errno));
-    //     }
-    // }
+
 
     return ret;
 }
@@ -113,9 +101,6 @@ zmq_controller_channel_t* zmq_controller_channel_init(const char *server, uint32
     if (ret->zmq_ctx == 0) {
         LOG_ERR("zmq_ctx_new(): %s\n", zmq_strerror(errno));
     }
-    // if (zmq_ctx_set(ret->zmq_ctx, ZMQ_IO_THREADS, 1) == -1) {
-    //     LOG_ERR("zmq_ctx_set(): %s\n", zmq_strerror(errno));
-    // }
 
     char addr[50];
     ret->listen_socket = zmq_socket(ret->zmq_ctx, ZMQ_PULL);
@@ -158,7 +143,6 @@ void zmq_host_recv(zmq_host_channel_t* channel, msg_t* msg) {
     }
 }
 
-//SJB **
 void zmq_host_recv_large(zmq_host_channel_t* channel, large_msg_t* msg) {
     char temp[8192];
     uint32_t total_recv = 0;
@@ -180,14 +164,8 @@ void zmq_host_recv_large(zmq_host_channel_t* channel, large_msg_t* msg) {
     if(total_recv != msg_length){
         LOG_DEBUG("total_recv %d not equal to msg len %d\n",total_recv,msg_length);
     }
-/*    if (zmq_recv(channel->from_socket, msg, sizeof(temp), 0) != -1) {
-    }
-    else {
-        LOG_ERR("zmq_recv(): %s\n", zmq_strerror(errno));
-    }
-*/
 }
-//SJB
+
 int zmq_host_recv_nowait(zmq_host_channel_t* channel, msg_t* msg) {
     if (zmq_recv(channel->from_socket, msg, sizeof(msg_t), ZMQ_DONTWAIT) != -1) {
         return 0;
@@ -278,7 +256,6 @@ void msg_decode_sync(uint32_t* version, msg_t* msg) {
 }
 
 
-// SJB **
 
 void msg_encode_host_data(const char* host_data,  int len, host_msg_t* msg, ominimon_header_t o_header);
 void msg_decode_host_data(char* host_data,  int * len, host_msg_t* msg, ominimon_header_t *o_header);
@@ -302,7 +279,6 @@ void msg_decode_host_data(char* host_data, int *len, host_msg_t* msg, ominimon_h
     memcpy(host_data,msg->data,msg->size);
 }
 
-// SJB
 
 void* create_dummy_channel();
 void* create_rb_channel();

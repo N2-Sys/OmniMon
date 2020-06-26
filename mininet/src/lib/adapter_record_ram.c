@@ -47,7 +47,6 @@ void adapter_destroy(adapter_t* adapter) {
     pcap_close(adapter->pcap);
 }
 
-//SJB **
 const u_char * adapter_next(adapter_t* adapter, tuple_t* p, enum PACKET_STATUS* status, struct pcap_pkthdr *hdr) {
     double pkt_ts; // packet timestamp
     int pkt_len; // packet snap length
@@ -88,21 +87,3 @@ const u_char * adapter_next(adapter_t* adapter, tuple_t* p, enum PACKET_STATUS* 
     *status = decode(pkt_data, pkt_len, (*hdr).len, pkt_ts, p);
     return pkt;
 }
-
-
-//SJB
-
-
-/*
-int adapter_next(adapter_t* adapter, tuple_t* p) {
-    if (adapter->cur == adapter->cnt) {
-        return -1;
-    }
-
-    adapter->cur++;
-    memcpy(p, adapter->ptr, sizeof(tuple_t));
-    adapter->ptr += sizeof(tuple_t);
-
-    return 0;
-}
-*/

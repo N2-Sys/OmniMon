@@ -14,7 +14,6 @@ typedef struct __attribute__ ((__packed__)) FlowKey {
     uint8_t proto;
 } flow_key_t;
 
-//SJB **
 typedef struct __attribute__ ((__packed__))  ominimon_header {
     uint32_t    position;
     uint8_t     version;
@@ -22,7 +21,6 @@ typedef struct __attribute__ ((__packed__))  ominimon_header {
     uint16_t    index2;
 }ominimon_header_t;
 
-//SJB
 
 
 #define TUPLE_NORMAL 0

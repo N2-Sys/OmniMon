@@ -1,6 +1,5 @@
 #ifndef __AFS_UTIL_H__
 #define __AFS_UTIL_H__
-#define DEBUG
 #include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
