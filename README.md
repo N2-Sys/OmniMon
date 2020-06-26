@@ -100,7 +100,7 @@ OmniMon contains the following configuration files. You need to modify these fil
    | Field            | Meaning                                                      |
    | ---------------- | ------------------------------------------------------------ |
    | **[Common]**     |                                                              |
-   | ** * project_path**   | the absolute path of the Omnimon testbed project             |
+   | * project_path   | the absolute path of the Omnimon testbed project             |
    | trace_pcap_list  | file listing all raw pcap files                              |
    | key_len          | flow key length in bit (default 5-tuple)                     |
    | interval_len     | epoch length (default 100ms)                                 |
@@ -109,7 +109,7 @@ OmniMon contains the following configuration files. You need to modify these fil
    | max_events       | mtcp events queue length                                     |
    | process_cpu      | the logical core id to run the mtcp thread (default 0)       |
    | **[Controller]** |                                                              |
-   | ** * ip_addr**        | the ip address you assigned to dpdk0 of Controller when installing mtcp |
+   | * ip_addr        | the ip address you assigned to dpdk0 of Controller when installing mtcp |
    | listen_port      | the listening port of Controller                             |
    | max_events       | mtcp events queue length                                     |
    | process_cpu      | the logical core id to run the mtcp thread (default 0)       |
