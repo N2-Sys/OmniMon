@@ -1,0 +1,6 @@
+table_add forward set_egr 00:00:00:00:00:01 => 1
+table_add forward set_egr 00:00:00:00:00:02 => 2
+table_add forward set_egr 00:00:00:00:00:03 => 3
+table_add forward set_egr 00:00:00:00:00:04 => 3
+table_add forward set_egr 00:00:00:00:00:05 => 3
+table_add forward_to_controller set_egr 10.0.0.5 => 3

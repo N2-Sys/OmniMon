@@ -230,6 +230,7 @@ We require the following dependencies to run OmniMon Mininet programs.
 * **cmake** >= 3.12
 * **libpcap:**  `sudo apt-get install libpcap-dev -y`
 * **libzmq:** `sudo apt-get install libzmq3-dev`
+* **libnuma:** `sudo apt-get install libnuma-dev -y`
 
 * **iniparser**:
 
@@ -239,6 +240,21 @@ cd iniparser
 make
 sudo cp lib* /usr/lib/
 sudo cp src/*.h /usr/include
+```
+
+* **dpdk**:
+```bash
+cd /usr/local/src
+sudo wget http://fast.dpdk.org/rel/dpdk-17.11.10.tar.xz
+sudo tar xvf dpdk-17.11.10.tar.xz
+sudo ln -s dpdk-stable-17.11.10 dpdk
+export RTE_SDK=/usr/local/src/dpdk
+cd dpdk/user_tools
+sudo -E ./dpdk-setup.sh
+	 - Press [14] to compile x86_64-native-linuxapp-gcc version
+   - Press [17] to insert IGB UIO module
+   - Press [21] to setup 4096 2MB hugepages
+   - Press [34] to quit the tool
 ```
 
 For the Mininet and bmv2 environments, you can follow the instructions on the official site and install the dependencies easily.
@@ -271,19 +287,23 @@ You should change the value of `BMV2_PATH` to the correct path of bmv2 folder
 
 The complete configuration parameters of Mininet verison OmniMon are shown in the table below. The option marked with * means that you have to set according to the operating environment.
 
-| Field             | Meaning                                  |
-| ----------------- | ---------------------------------------- |
-| **[Common]**      |                                          |
-| * trace_dir       | directory of the test trace              |
-| * trace_pcap_list | file listing all raw pcap files          |
-| key_len           | flow key length in bit (default 5-tuple) |
-| interval_len      | epoch length (default 100ms)             |
+| Field             | Meaning                                                      |
+| ----------------- | ------------------------------------------------------------ |
+| **[Common]**      |                                                              |
+| * trace_dir       | directory of the test trace                                  |
+| trace_pcap_list   | file listing all raw pcap files                              |
+| key_len           | flow key length in bit (default 5-tuple)                     |
+| interval_len      | epoch length (default 100ms)                                 |
+| host_max_key      | max flows of each epoch in the test trace                    |
+| **[Host]**        |                                                              |
+| zmq_data_server   | the ip address you assigned to controller（default h5: tcp://10.0.0.5） |
+| dpdk_args         | Dpdk init arguments                                          |
 
 After modifying the configuration file, you can compile end_host and comtroller executable files using following commands.
 
 ```bash
 cd ${omnimon_dir}/mininet/build
-cmake ../src
+cmake ..
 make end_host 
 make controller
 ```
