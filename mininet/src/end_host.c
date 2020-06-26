@@ -273,9 +273,9 @@ void * io_thread(void *arg) {
                     if (version < max_version) {
                         version_recv[version] = now_us();
                     }
-                    // if (version > host->last_version) {
-                    //     host->last_version = version;
-                    // }
+                    if (version > host->last_version) {
+                        host->last_version = version;
+                    }
                     break;
                 case MSG_NEW_FLOW:
                     break;
