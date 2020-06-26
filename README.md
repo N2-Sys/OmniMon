@@ -21,7 +21,7 @@ We require the following depedencies to run OmniMon testbed programs.
 
 * **iniparser**:
 
-```
+```bash
 git clone http://github.com/ndevilla/iniparser.git
 cd iniparser
 make
@@ -30,7 +30,7 @@ sudo cp src/*.h /usr/include
 ```
 * **mtcp**:
 
-```
+```bash
 git clone https://github.com/mtcp-stack/mtcp.git
 cd mtcp
 git submodule init
@@ -100,7 +100,7 @@ OmniMon contains the following configuration files. You need to modify these fil
    | Field            | Meaning                                                      |
    | ---------------- | ------------------------------------------------------------ |
    | **[Common]**     |                                                              |
-   | *** project_path**   | the absolute path of the Omnimon testbed project             |
+   | ** * project_path**   | the absolute path of the Omnimon testbed project             |
    | trace_pcap_list  | file listing all raw pcap files                              |
    | key_len          | flow key length in bit (default 5-tuple)                     |
    | interval_len     | epoch length (default 100ms)                                 |
@@ -109,7 +109,7 @@ OmniMon contains the following configuration files. You need to modify these fil
    | max_events       | mtcp events queue length                                     |
    | process_cpu      | the logical core id to run the mtcp thread (default 0)       |
    | **[Controller]** |                                                              |
-   | *** ip_addr**        | the ip address you assigned to dpdk0 of Controller when installing mtcp |
+   | ** * ip_addr**        | the ip address you assigned to dpdk0 of Controller when installing mtcp |
    | listen_port      | the listening port of Controller                             |
    | max_events       | mtcp events queue length                                     |
    | process_cpu      | the logical core id to run the mtcp thread (default 0)       |
@@ -137,9 +137,9 @@ To compile the Omnimon executable files, you need to modify the `MTCP_DIR` varia
 set(MTCP_DIR <PATH to mTCP>)
 ```
 
-After updating the CMakeLists.txt, you can compile the executable files using following commands on each server. The compilation result will be output to the bin directory. 
+After updating the CMakeLists.txt, you can compile the executable files using following commands on each server. The compilation result will be output to the `${omnimon_dir}/testbed/bin` directory. 
 
-```
+```bash
 cd ${omnimon_dir}/testbed/build
 cmake ..
 make controller
@@ -152,7 +152,7 @@ make host_tx
 
 We provide a simple version of OmniMon data plane P4 program. The function of this program mainly includes parsing the header of OmniMon and completing the basic forwarding function. We now hide the counting part that requires the stateful ALU of Tofino, due to the Barefoot NDA. 
 
-When the program is deployed, you need to configure the port and add the flow entry. Note that for the small-scale CAIDA trace we provide, we have added an Ethernet header to cooperate with our dummy P4 program for Layer 2 forwarding. The dst mac address is 9c:69:b4:60:ef:c9. You can use this address to add flow entry of the forward table.
+When the program is deployed, you need to configure the port and add the flow entry. Note that for the CAIDA trace we provide, we have added an Ethernet header to cooperate with our dummy P4 program for Layer 2 forwarding. The dst mac address is 9c:69:b4:60:ef:c9. You can use this address to add flow entry of the forward table.
 
 
 
@@ -160,7 +160,7 @@ When the program is deployed, you need to configure the port and add the flow en
 
 Make sure the current directory is `${omnimon_dir}/testbed`, run
 
-```
+```bash
 sudo ./bin/controller config/config.ini
 ```
 
@@ -170,13 +170,13 @@ Make sure the current directory is `${omnimon_dir}/testbed`
 
 On sender node, run:
 
-```
+```bash
 sudo ./bin/host_tx config/config.ini 1
 ```
 
 On receiver node, run:
 
-```
+```bash
 sudo ./bin/host_rx config/config.ini 2
 ```
 
@@ -186,13 +186,11 @@ sudo ./bin/host_rx config/config.ini 2
 We show the working process and output file of Omnimon testbed program in this part.
 Here we have omitted a lot of output content of the mTCP stack.
 
-We first run Omnimon's controller, waiting for the host's connection.
+We first run Omnimon's controller:
 
 ![](./img/controller.png)
 
-Next, we run host\_tx and host\_rx in sequence to establish the connection with the controller.
-After establishing connections with all hosts, the controller will notify the hosts to start working.
-
+Next, we run host\_tx and host\_rx in sequence：
 The running process of the host\_tx (sender) is shown in the figure:
 
 ![](./img/sender.png)
@@ -201,7 +199,7 @@ The running process of the host\_rx (receiver) is shown in the figure:
 
 ![](./img/receiver.png)
 
-After the program ends, the result file can be viewed in the `output` directory.  The following figure uses the receiver as an example.
+After the program ends, the result file can be viewed in the `${omnimon_dir}/testbed/output` directory.  The following figure uses the receiver as an example.
 
 ![](./img/testbed_output.png)
 
@@ -222,7 +220,7 @@ We require the following dependencies to run OmniMon Mininet programs.
 
 * **iniparser**:
 
-```
+```bash
 git clone http://github.com/ndevilla/iniparser.git
 cd iniparser
 make
