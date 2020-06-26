@@ -182,6 +182,7 @@ enum PACKET_STATUS decode(const uint8_t* pkt,
         // unkown ethernet header length
         status = STATUS_NON_IP;
     }
+    status = STATUS_VALID;
     uint32_t len = cap_len - eth_len;
     // error checking (IP level)
     ip_hdr = (struct ip*)(pkt + eth_len);
