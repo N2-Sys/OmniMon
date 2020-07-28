@@ -127,6 +127,10 @@ def read_register_from_switch(ip, port, pre):
 
     # write values into files
     switch_id = port-default_port+1
+    path = "../output/switch/"
+    isexist = os.path.exists(path)
+    if not isexist:
+	os.makedirs(path)
     ingress_file_name = '../output/switch/s%d_ingress.txt' % (switch_id)
     egress_file_name = '../output/switch/s%d_egress.txt' % (switch_id)
     ingress_file = open(ingress_file_name, "wb+")

@@ -24,7 +24,6 @@
 #include "include/config.h"
 
 #include <semaphore.h>
-
 #include "host.h"
 #include "include/adapter_record_ram.h"
 #include "include/hash.h"
@@ -524,10 +523,10 @@ int main (int argc, char *argv []) {
     index1 = (uint32_t*)calloc(MAX_HOST_INDEX, sizeof(uint32_t));
     index2 = (uint32_t*)calloc(MAX_HOST_INDEX, sizeof(uint32_t));
     used = (uint32_t*)calloc(MAX_HOST_INDEX, sizeof(uint32_t));
-
     char* output_dir = NULL;
     sprintf(tmp, "../output/hosts/");
     output_dir = tmp;
+    mkdir(output_dir,S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
     host_t* host = host_init(id, MAX_FLOW, key_len/8, interval_len, output_dir, zmq_server);
 
     pthread_attr_t attr;
