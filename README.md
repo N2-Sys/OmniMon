@@ -234,16 +234,6 @@ We require the following dependencies to run OmniMon Mininet programs.
 * **libnuma:** `sudo apt-get install libnuma-dev -y`
 * **libconfig:** `sudo apt-get install libconfig-dev -y`
 
-* **iniparser**:
-
-```bash
-git clone http://github.com/ndevilla/iniparser.git
-cd iniparser
-make
-sudo cp lib* /usr/lib/
-sudo cp src/*.h /usr/include
-```
-
 * **dpdk**:
 ```bash
 cd /usr/local/src
@@ -251,7 +241,7 @@ sudo wget http://fast.dpdk.org/rel/dpdk-17.11.10.tar.xz
 sudo tar xvf dpdk-17.11.10.tar.xz
 sudo ln -s dpdk-stable-17.11.10 dpdk
 export RTE_SDK=/usr/local/src/dpdk
-cd dpdk/user_tools
+cd dpdk/usertools
 sudo -E ./dpdk-setup.sh
 	 - Press [14] to compile x86_64-native-linuxapp-gcc version
    - Press [17] to insert IGB UIO module
