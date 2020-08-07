@@ -232,6 +232,7 @@ We require the following dependencies to run OmniMon Mininet programs.
 * **libpcap:**  `sudo apt-get install libpcap-dev -y`
 * **libzmq:** `sudo apt-get install libzmq3-dev`
 * **libnuma:** `sudo apt-get install libnuma-dev -y`
+* **libconfig:** `sudo apt-get install libconfig-dev -y`
 
 * **iniparser**:
 

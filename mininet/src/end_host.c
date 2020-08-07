@@ -153,72 +153,8 @@ void* host_io_thread(void *arg){
             usleep(400);
             msg_decode_host_data(pkt, &len, &host_ring_msg, &o_header);
             process_host_send_pkt(pkt,processed_pkt,len,&o_header);
-	pcap_sendpacket(handle,processed_pkt,len+sizeof(struct ominimon_header));
+            pcap_sendpacket(handle,processed_pkt,len+sizeof(struct ominimon_header));
         }
-
-        // parsing incoming packets
-        if (pcap_next_ex(handle, &pcap_hdr, &host_recv_pkt) == 1){
-            // parse packet
-            const struct sniff_ethernet *ethernet; /* The ethernet header */
-            const struct sniff_omnimon *omnimon; /* The omnimon header */
-            const struct sniff_ip *ip; /* The IP header */
-            const struct sniff_tcp *tcp; /* The TCP header */
-            const struct sniff_udp *udp; /* The UDP header */
-            ethernet = (struct sniff_ethernet*)(host_recv_pkt);
-            //LOG_MSG("Parsing Omnimon header\n");
-            omnimon = (struct sniff_omnimon*)(host_recv_pkt+sizeof(struct sniff_ethernet));
-            //LOG_MSG("Parsing ether: %d,%d,%d,%d,%d,%d",ethernet->srcAddr[0],ethernet->srcAddr[1],ethernet->srcAddr[2],ethernet->srcAddr[3],ethernet->srcAddr[4],ethernet->srcAddr[5]);
-            //LOG_MSG("Parsing IPv4 header\n");
-            ip = (struct sniff_ip*)(host_recv_pkt+sizeof(struct sniff_ethernet)+sizeof(struct sniff_omnimon));
-            uint16_t srcPort, dstPort;
-            //LOG_MSG("Protocol: %u\n", (unsigned int)ip->protocol);
-            if (ip->protocol == 6) {
-              //  LOG_MSG("Parsing TCP header\n");
-                tcp = (struct sniff_tcp*)((uint8_t*)ip+(ip->ip_len<<2));
-                srcPort = tcp->srcPort;
-                dstPort = tcp->dstPort;
-            } else if (ip->protocol == 17) {
-                //LOG_MSG("Parsing UDP header\n");
-                udp = (struct sniff_udp*)((uint8_t*)ip+(ip->ip_len<<2));
-                srcPort = tcp->srcPort;
-                dstPort = tcp->dstPort;
-            }
-
-            // decode information
-            tuple_t* t = (tuple_t*)malloc(sizeof(tuple_t));
-            memset(t, 0, sizeof(tuple_t));
-            t->key.src_ip = ip->srcAddr;
-            t->key.dst_ip = ip->dstAddr;
-            t->key.proto = ip->protocol;
-            t->key.src_port = srcPort;
-            t->key.dst_port = dstPort;
-            t->byte = ntohs(ip->ip_len);
-            uint8_t epoch = omnimon->epoch;
-            uint32_t host_index = ntohl(omnimon->host_index);
-
-            // update hashtable
-            if (unlikely(epoch > host->last_version)) { // hybrid sync protocol
-                host->last_version = epoch;
-            }
-            ig_data = host->ingress_flow_data+host_index;
-            if (ig_data->pkt_cnt == 0) { // empty
-                memcpy((uint8_t *)(host->ingress_flow_key+host_index), (uint8_t *)&t, sizeof(flow_key_t));
-                ig_data->pkt_cnt = 1;
-                ig_data->byte_cnt = t->byte;
-                ig_data->epoch = epoch;
-            } else {
-                if (epoch == ig_data->epoch) { // hit in the same epoch
-                    ig_data->pkt_cnt += 1;
-                    ig_data->byte_cnt += t->byte;
-                }
-                else { // move into the next epoch
-                    ig_data->pkt_cnt = 1;
-                    ig_data->byte_cnt = t->byte;
-                    ig_data->epoch = epoch;
-                }
-            }
-        }
-        /***********************/
     }
     LOG_MSG("Inter_host IO thread end\n");
 }
@@ -498,17 +434,21 @@ int main (int argc, char *argv []) {
     conf = Config_Init(argv[1]);
     uint32_t id = (uint32_t)strtoul(argv[2], NULL, 10);
 
-    char* dpdk_args = conf_host_dpdk_args(conf);
+    char* dpdk_args; 
+    conf_host_dpdk_args(conf, &dpdk_args);
     init_dpdk(dpdk_args);
     //DEBUG
     LOG_MSG("DPDK init sucessfully\n");
     uint32_t MAX_FLOW = conf_host_max_key(conf);
     uint32_t key_len = conf_common_key_len(conf);
     uint32_t interval_len = conf_common_interval_len(conf);
-    const char* zmq_server = conf_common_zmq_data_server(conf);
+    const char* zmq_server;
+    conf_common_zmq_data_server(conf, &zmq_server);
 
-    const char* dir = conf_common_trace_dir(conf);
-    const char* filename = conf_common_pcap_list(conf);
+    const char* dir;
+    conf_common_trace_dir(conf, &dir);
+    const char* filename;
+    conf_common_pcap_list(conf, &filename);
     adapter_t* adapter = adapter_init(dir, filename);
     LOG_MSG("Trace file parse sucessfully\n");
     char tmp[100];

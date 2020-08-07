@@ -84,7 +84,8 @@ int main (int argc, char *argv []) {
     }
 
     conf = Config_Init(argv[1]);
-    const char* zmq_server = conf_common_zmq_data_server(conf);
+    const char* zmq_server;
+    conf_common_zmq_data_server(conf, &zmq_server);
 
     channel = zmq_controller_channel_init(zmq_server, n_host);
     uint32_t is_end = 0;
