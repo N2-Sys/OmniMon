@@ -298,7 +298,7 @@ cd ${omnimon_dir}/mininet/build
 cmake ..
 make end_host 
 make controller
-make recviver
+make receiver
 ```
 
 ## Start Mininet
